@@ -34,4 +34,4 @@ If your AlexaPi isn't running on startup, crashes or your audio input / output i
 
 Also, you can
 - chat with us at **[gitter.im/alexa-pi/Lobby](https://gitter.im/alexa-pi/Lobby)**  
-- join our **[AlexaPi Users](https://plus.google.com/communities/105607055053826225738/)** user community on Google+  
+- join our **[AlexaPi Users](https://plus.google.com/communities/105607055053826225738/)** user community on Google+
