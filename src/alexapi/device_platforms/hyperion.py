@@ -30,7 +30,7 @@ class HyperionPlatform(BasePlatform):
 		self.print_debug("Hyperion JSON Server - {}".format(self.service))
 		self.init_connection()
 
-	def after_setup(self):
+	def after_setup(self, trigger_callback=None): # pylint: disable=unused-argument
 		self.setup_complete = True
 		self.check_connection()
 
@@ -44,6 +44,9 @@ class HyperionPlatform(BasePlatform):
 
 	def display_state(self, state):
 		return 'start' if state else 'stop'
+
+	def force_recording(self):
+		pass
 
 	def get_color(self, mode):
 		return self._pconfig["color_{}".format(mode)]
@@ -156,9 +159,6 @@ class HyperionPlatform(BasePlatform):
 
 	def should_flash(self, mode):
 		return self._pconfig["flash_state_{}".format(mode)]
-
-	def should_record(self):
-		pass
 
 	def socket_status(self):
 		if not self.socket:
