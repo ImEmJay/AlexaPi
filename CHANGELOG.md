@@ -14,6 +14,7 @@ Please update your config according to the  [Configuration changes] section on t
 
 ### Added
 - Startup, pre-interaction, post-interaction and Shutdown commands. Can be used to adjust shairport-sync volume for example (see config.yaml)
+- New _hyperion_ platform. Allows status visualization with [Hyperion](https://hyperion-project.org).
 
 ## [1.3.1] - 2017-01-01
 This is mainly a test of doing bugfix releases.
@@ -46,7 +47,7 @@ This is mainly a test of doing bugfix releases.
 
 ### Changed
 - Improved directory structure.
-- Paths improvements for better _platform-independency_ and UX. 
+- Paths improvements for better _platform-independency_ and UX.
     - Use system temporary directory for recordings/answers, which is usually in RAM to avoid using system storage.
     - Default install path is now _/opt/AlexaPi_.
 - Uses pocketsphinx only from PyPI (not the extra `git pull` anymore), which saves about 200 MB on bandwidth and 250 MB in storage space.
