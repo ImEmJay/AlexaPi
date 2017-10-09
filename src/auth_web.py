@@ -3,11 +3,18 @@
 from __future__ import print_function
 import os
 import json
-import urllib
 import socket
+import uuid
+import hashlib
+
 import yaml
 import cherrypy
 import requests
+
+try:
+	from urllib.parse import quote
+except ImportError:
+	from urllib import quote
 
 import alexapi.config
 
@@ -22,7 +29,7 @@ class Start(object):
 			"alexa:all": {
 				"productID": config['alexa']['Device_Type_ID'],
 				"productInstanceAttributes": {
-					"deviceSerialNumber": "001"
+					"deviceSerialNumber": hashlib.sha256(str(uuid.getnode()).encode()).hexdigest()
 				}
 			}
 		})
@@ -41,7 +48,7 @@ class Start(object):
 		raise cherrypy.HTTPRedirect(prepared_req.url)
 
 	def code(self, var=None, **params):		# pylint: disable=unused-argument
-		code = urllib.quote(cherrypy.request.params['code'])
+		code = quote(cherrypy.request.params['code'])
 		callback = cherrypy.url()
 		payload = {
 			"client_id": config['alexa']['Client_ID'],
@@ -56,10 +63,15 @@ class Start(object):
 
 		alexapi.config.set_variable(['alexa', 'refresh_token'], resp['refresh_token'])
 
-		return (
-			"<h2>Success!</h2><h3> Refresh token has been added to your "
-			"config file, you may now reboot the Pi </h3><br>{}"
-		).format(resp['refresh_token'])
+		return "<h2>Success!</h2>" \
+				"<p>The refresh token has been added to your config file.</p>" \
+				"<p>Now:</p>" \
+				"<ul>" \
+				"<li>close your this browser window,</li>" \
+				"<li>exit the setup script as indicated,</li>" \
+				"<li>and follow the Post-installation steps.</li>" \
+				"</ul>"
+
 
 	index.exposed = True
 	code.exposed = True
@@ -71,5 +83,5 @@ cherrypy.config.update({"environment": "embedded"})
 
 ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
 print("Ready goto http://{}:5050 or http://localhost:5050  to begin the auth process".format(ip))
-print("(Press Ctrl-C to exit this script once authorization is complete)")
+print("(Press Ctrl-C (or close this window on Windows) to exit this script once authorization is complete)")
 cherrypy.quickstart(Start())
